@@ -1,0 +1,38 @@
+.root {
+    -fx-background-color: #f2f2f2;
+}
+
+.encrypt-button {
+    -fx-background-color: #ff6347;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.encrypt-button:hover {
+    -fx-background-color: #ff4631;
+}
+
+.decrypt-button {
+    -fx-background-color: #32cd32;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.decrypt-button:hover {
+    -fx-background-color: #2eb82e;
+}
+
+.generate-key-button {
+    -fx-background-color: #0066cc;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.generate-key-button:hover {
+    -fx-background-color: #0052a3;
+}
+
+
+.anchor{
+    -fx-background-color: #aec9c9;
+}
