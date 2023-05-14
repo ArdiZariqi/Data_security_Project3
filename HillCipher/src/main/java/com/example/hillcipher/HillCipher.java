@@ -157,3 +157,61 @@ public class HillCipher implements Initializable {
             hillCipher(msg, keyMatrix, false);
         }
     }
+    void hillCipher(String message, double[][] keyMatrix, boolean mode) {
+        int size = getMatrixSize();
+
+        if (message.length() % size != 0) {
+            int padSize = size - (message.length() % size);
+            for (int i = 0; i < padSize; i++) {
+                message += 'X';
+            }
+        }
+
+        String finalCipher = "";
+
+        for (int i = 0; i < message.length(); i += size) {
+            String blockMsg = "";
+            String temp = message;
+            double[][] messageVector = new double[size][1];
+            blockMsg = temp.substring(i, i + size);
+
+            for (int n = 0; n < size; n++) {
+                messageVector[n][0] = (blockMsg.charAt(n)) % 65;
+            }
+
+            double[][] cipherMatrix = new double[size][1];
+
+            if (!mode) {
+                if (size == 1) {
+                    double[][] v = new double[size][size];
+                    v[0][0] = findInverseMod26(keyMatrix[0][0]);
+                    hillVector(cipherMatrix, v, messageVector);
+                } else {
+                    hillVector(cipherMatrix, inverseMatrix(keyMatrix), messageVector);
+                }
+                String plainText = "";
+                for (int n = 0; n < size; n++) {
+                    plainText += (char) (cipherMatrix[n][0] + 65);
+                }
+                finalCipher += plainText;
+            } else {
+                hillVector(cipherMatrix, keyMatrix, messageVector);
+                String cipherText = "";
+                for (int n = 0; n < size; n++) {
+                    cipherText += (char) (cipherMatrix[n][0] + 65);
+                }
+                finalCipher += cipherText;
+            }
+        }
+
+        System.out.println("Ciphertext: " + finalCipher);
+        cipherTxt.setText(finalCipher);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        ObservableList<String> inputSizes = FXCollections.observableArrayList("1", "2", "3", "4");
+        inpuTxt_ComboBox.setItems(inputSizes);
+        inpuTxt_ComboBox.setValue("1");
+    }
+}
