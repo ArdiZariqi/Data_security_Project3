@@ -94,6 +94,82 @@ public class HillCipher implements Initializable {
         }
         throw new IllegalArgumentException("The inverse modulo does not exist.");
     }
+
+    double[][] adjoint(double[][] matrix) {
+        int size = getMatrixSize();
+        double[][] adjointMatrix = new double[size][size];
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                int sign = ((i + j) % 2 == 0) ? 1 : -1;
+                double[][] minor = minorMatrix(matrix, i, j);
+                adjointMatrix[j][i] = Math.floorMod((int) (sign * determinant(minor)), 26);
+            }
+        }
+        System.out.println("adj: ");
+        printMatrix(adjointMatrix);
+        return adjointMatrix;
+    }
+
+    double[][] minorMatrix(double[][] matrix, int row, int col) {
+        int n = matrix.length;
+        double[][] minor = new double[n - 1][n - 1];
+        int p = 0, q = 0;
+        for (int i = 0; i < n; i++) {
+            if (i != row) {
+                for (int j = 0; j < n; j++) {
+                    if (j != col) {
+                        minor[p][q++] = matrix[i][j];
+                    }
+                }
+                p++;
+                q = 0;
+            }
+        }
+        return minor;
+    }
+
+    double[][] inverseMatrix(double[][] matrix) {
+        int size = getMatrixSize();
+        double[][] inverse = new double[size][size];
+        double det = determinant(matrix);
+        double inverseDet = findInverseMod26(det);
+        double[][] adj = adjoint(matrix);
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                inverse[i][j] = Math.floorMod((int) (adj[i][j] * inverseDet), 26);
+            }
+        }
+        System.out.println("Inverse: ");
+        printMatrix(inverse);
+        return inverse;
+    }
+
+    public static void printMatrix(double[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    void hillVector(double[][] cipherMatrix,
+                    double[][] keyMatrix,
+                    double[][] messageVector) {
+        int size = getMatrixSize();
+        int x, i, j;
+        for (i = 0; i < size; i++) {
+            for (j = 0; j < 1; j++) {
+                cipherMatrix[i][j] = 0;
+                for (x = 0; x < size; x++) {
+                    cipherMatrix[i][j] +=
+                            keyMatrix[i][x] * messageVector[x][j];
+                }
+                cipherMatrix[i][j] = Math.floorMod((int) cipherMatrix[i][j], 26);
+            }
+        }
+    }
     public double determinant(double[][] a) {
         double det = 0, sign = 1, p = 0, q = 0;
         int n = a.length;
