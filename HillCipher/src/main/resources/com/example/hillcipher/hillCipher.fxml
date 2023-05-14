@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="835.0" styleClass="anchor" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hillcipher.HillCipher">
+    <children>
+        <Label layoutX="112.0" layoutY="157.0" prefHeight="25.0" prefWidth="81.0" style="-fx-font-weight: bold;" text="Text Input:">
+            <font>
+                <Font name="Tahoma" size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="112.0" layoutY="398.0" prefHeight="26.0" prefWidth="105.0" style="-fx-font-weight: bold;" text="Text Output:">
+            <font>
+                <Font name="Tahoma" size="14.0" />
+            </font>
+        </Label>
+        <Button fx:id="encryptBtn" layoutX="112.0" layoutY="333.0" mnemonicParsing="false" onAction="#Encrypt" prefHeight="41.0" prefWidth="95.0" styleClass="encrypt-button" stylesheets="@styles.css" text="Encrypt">
+            <font>
+                <Font name="Tahoma" size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="decryptBtn" layoutX="231.0" layoutY="333.0" mnemonicParsing="false" onAction="#Decrypt" prefHeight="41.0" prefWidth="95.0" styleClass="decrypt-button" stylesheets="@styles.css" text="Decrypt">
+            <font>
+                <Font name="Tahoma" size="14.0" />
+            </font>
+        </Button>
+        <Label layoutX="164.0" layoutY="86.0" style="-fx-font-weight: bold;" text="Key: ">
+            <font>
+                <Font name="Tahoma" size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="keyTxt" layoutX="209.0" layoutY="82.0" />
+        <TextArea fx:id="plainTxt" layoutX="88.0" layoutY="197.0" prefColumnCount="356" prefHeight="102.0" prefRowCount="135" prefWidth="671.0" wrapText="true" />
+        <TextArea fx:id="cipherTxt" layoutX="88.0" layoutY="437.0" prefHeight="102.0" prefWidth="671.0" wrapText="true" />
+        <ComboBox fx:id="inpuTxt_ComboBox" layoutX="211.0" layoutY="44.0" prefWidth="150.0" />
+        <Label layoutX="112.0" layoutY="47.0" style="-fx-font-weight: bold;" text="Matrix Size: ">
+            <font>
+                <Font name="Tahoma" size="14.0" />
+            </font>
+        </Label>
+        <Button layoutX="209.0" layoutY="122.0" mnemonicParsing="false" onAction="#generateKey" prefHeight="25.0" prefWidth="149.0" styleClass="generate-key-button" stylesheets="@styles.css" text="Generate Key">
+            <font>
+                <Font name="Tahoma" size="14.0" />
+            </font>
+        </Button>
+    </children>
+    <opaqueInsets>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </opaqueInsets>
+    <padding>
+        <Insets bottom="20.0" left="50.0" right="50.0" top="20.0" />
+    </padding>
+</AnchorPane>
