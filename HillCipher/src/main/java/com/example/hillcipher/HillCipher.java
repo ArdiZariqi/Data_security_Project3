@@ -94,3 +94,66 @@ public class HillCipher implements Initializable {
         }
         throw new IllegalArgumentException("The inverse modulo does not exist.");
     }
+public double determinant(double[][] a) {
+    double det = 0, sign = 1, p = 0, q = 0;
+    int n = a.length;
+    if (n == 1) {
+        det = a[0][0];
+    } else {
+        double[][] b = new double[n - 1][n - 1];
+        for (int x = 0; x < n; x++) {
+            p = 0;
+            q = 0;
+            for (int i = 1; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (j != x) {
+                        b[(int) p][(int) q++] = a[i][j];
+                        if (q % (n - 1) == 0) {
+                            p++;
+                            q = 0;
+                        }
+                    }
+                }
+            }
+            det = det + a[0][x] * determinant(b) * sign;
+            sign = -sign;
+        }
+    }
+    return det % 26;
+}
+
+@FXML
+private void Encrypt(ActionEvent event) {
+    String msg = plainTxt.getText();
+    int size = getMatrixSize();
+    String key = keyTxt.getText();
+    if (key.length() != size * size) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText("This is an alert!");
+        alert.setContentText("Qelesi duhet te jete " + size * size + " karaktere!!");
+        alert.showAndWait();
+    } else {
+        double[][] keyMatrix = new double[size][size];
+        getKeyMatrix(key, keyMatrix);
+        hillCipher(msg, keyMatrix, true);
+    }
+}
+
+@FXML
+private void Decrypt(ActionEvent event) {
+    String msg = plainTxt.getText();
+    int size = getMatrixSize();
+    String key = keyTxt.getText();
+    if (key.length() != size * size) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText("This is an alert!");
+        alert.setContentText("Qelesi duhet te jete " + size * size + " karaktere!!");
+        alert.showAndWait();
+    } else {
+        double[][] keyMatrix = new double[size][size];
+        getKeyMatrix(key, keyMatrix);
+        hillCipher(msg, keyMatrix, false);
+    }
+}
