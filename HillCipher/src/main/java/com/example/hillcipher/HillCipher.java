@@ -1,14 +1,96 @@
 package com.example.hillcipher;
 
+
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 
-public class HillCipher {
-    @FXML
-    private Label welcomeText;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class HillCipher implements Initializable {
 
     @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+    private TextArea plainTxt, cipherTxt;
+    @FXML
+    private Button decryptBtn;
+    @FXML
+    private Button encryptBtn;
+    @FXML
+    private Button generateBtn;
+
+    @FXML
+    private ComboBox inpuTxt_ComboBox;
+
+    @FXML
+    private TextField keyTxt;
+
+    int getMatrixSize() {
+        String getSize = (String) inpuTxt_ComboBox.getValue();
+        int stringSize = Integer.parseInt(getSize);
+        return stringSize;
+
     }
-}
+
+    double[][] getKeyMatrix(String key, double[][] keyMatrix) {
+        int size = getMatrixSize();
+        int k = 0;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                keyMatrix[i][j] = (key.charAt(k)) % 65;
+                k++;
+            }
+        }
+        return keyMatrix;
+    }
+
+    Boolean checkKey(String key) {
+        if (key.length() == 0) {
+            return false;
+        }
+        try {
+            double[][] keyMatrix = new double[getMatrixSize()][getMatrixSize()];
+            double iMD = findInverseMod26(determinant(getKeyMatrix(key, keyMatrix)));
+            return true;
+        } catch (IllegalArgumentException e) {
+            key = "";
+            return false;
+        }
+    }
+
+    String randomKey() {
+        final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String key = "";
+        int size = getMatrixSize() * getMatrixSize();
+        while (key.length() < size) {
+            char extra = upper.charAt((int) ((Math.random() * 25) + 0));
+            key += extra;
+        }
+        return key;
+    }
+
+    @FXML
+    void generateKey() {
+        String key = "";
+        if (getMatrixSize() <= 7) {
+            while (!checkKey(key)) {
+                key = randomKey();
+            }
+        } else {
+            key = randomKey();
+        }
+        keyTxt.setText(key);
+    }
+
+    double findInverseMod26(double b) {
+        for (int i = 1; i < 26; i++) {
+            if ((b * i) % 26 == 1) {
+                return i;
+            }
+        }
+        throw new IllegalArgumentException("The inverse modulo does not exist.");
+    }
